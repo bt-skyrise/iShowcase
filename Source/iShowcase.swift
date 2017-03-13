@@ -29,13 +29,13 @@ import Foundation
      
      - showcase: The instance of the showcase
      */
-    @objc optional func iShowcaseCanceled(_ showcase: iShowcase)
+    @objc optional func iShowcaseCancelled(_ showcase: iShowcase)
     /**
      Called when the next showcase is shown
      
      - showcase: The instance of the showcase
      */
-    @objc optional func iShowcaseNext(_ showcase: iShowcase)
+    @objc optional func iShowcaseNextCaseShown(_ showcase: iShowcase)
 }
 
 @objc open class iShowcase: UIView {
@@ -150,6 +150,7 @@ import Foundation
             addSubview(textBackgroundView)
             addSubview(counter)
             addSubview(titleLabel)
+            
             titleLabel.text = titles.first
             addSubview(detailsLabel)
             detailsLabel.text = subtitles.first
@@ -174,8 +175,8 @@ import Foundation
             self.removeFromSuperview()
             
             if let delegate = self.delegate {
-                if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseCanceled(_:))) {
-                    delegate.iShowcaseCanceled!(self)
+                if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseCancelled(_:))) {
+                    delegate.iShowcaseCancelled!(self)
                 }
             }
         })
@@ -266,9 +267,7 @@ import Foundation
      Display the iShowcase
      */
     open func show() {
-        if singleShotId != -1
-            && UserDefaults.standard.bool(forKey: String(
-                format: "iShowcase-%ld", singleShotId)) {
+        if singleShotId != -1 && UserDefaults.standard.bool(forKey: String(format: "iShowcase-%ld", singleShotId)) {
             return
         }
         
@@ -277,12 +276,8 @@ import Foundation
             view.isUserInteractionEnabled = false
         }
         
-        UIView.transition(
-            with: containerView,
-            duration: 0.5,
-            options: UIViewAnimationOptions.transitionCrossDissolve,
-            animations: { () -> Void in
-                self.containerView.addSubview(self)
+        UIView.transition(with: containerView, duration: 0.5, animations: { () -> Void in
+            self.containerView.addSubview(self)
         }) { (_) -> Void in
             if let delegate = self.delegate {
                 if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseShown)) {
@@ -358,7 +353,7 @@ import Foundation
                     width: showcaseRect.size.width + 30,
                     height: showcaseRect.size.height + 30)
                 
-                context?.setShadow(offset: CGSize.zero, blur: 3, color: highlightColor.cgColor)
+                context?.setShadow(offset: CGSize.zero, blur: 10, color: highlightColor.cgColor)
                 context?.setFillColor(coverColor.cgColor)
                 context?.setStrokeColor(highlightColor.cgColor)
                 context?.setLineWidth(3)
@@ -367,7 +362,7 @@ import Foundation
                 
                 // Inner highlight
                 context?.setLineWidth(3)
-                context?.addPath(UIBezierPath(roundedRect: showcaseRect, cornerRadius: 2.0).cgPath)
+                context?.addPath(UIBezierPath(roundedRect: showcaseRect, cornerRadius: 1.0).cgPath)
                 context?.drawPath(using: .fillStroke)
                 
                 let showcase = UIGraphicsGetImageFromCurrentImageContext()
@@ -387,7 +382,7 @@ import Foundation
                 
                 // Draw highlight
                 context?.setLineWidth(2.54)
-                //context?.setShadow(offset: CGSize.zero, blur: 30, color: highlightColor.cgColor)
+                context?.setShadow(offset: CGSize.zero, blur: 10, color: highlightColor.cgColor)
                 context?.setFillColor(coverColor.cgColor)
                 context?.setStrokeColor(highlightColor.cgColor)
                 context?.addArc(center: center, radius: CGFloat(radius * 2), startAngle: 0, endAngle: CGFloat(2 * M_PI), clockwise: false)
@@ -475,7 +470,7 @@ import Foundation
             
             shouldAnimate = topLeft.y != lastPoint.y
             if shouldAnimate {
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: 0.4, animations: {
                     self.textBackgroundView.alpha = 0.0
                     self.titleLabel.alpha = 0.0
                     self.detailsLabel.alpha = 0.0
@@ -512,7 +507,7 @@ import Foundation
             self.counter.alpha = 0.0
             self.closeButton.alpha = 0.0
             
-            UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.3, options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
                 self.textBackgroundView.alpha = 1.0
                 self.titleLabel.alpha = 1.0
                 self.detailsLabel.alpha = 1.0
@@ -596,13 +591,13 @@ import Foundation
         }
         
         if targetViews.isEmpty {
-            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+            UIView.animate(withDuration: 0.35, animations: { () -> Void in
                 self.alpha = 0
             }, completion: { (_) -> Void in
                 self.onAnimationComplete()
             })
         } else {
-            UIView.transition(with: containerView, duration: 0.5, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
+            UIView.transition(with: containerView, duration: 0.35, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
                 let view = self.targetViews.first!
                 self.setupShowcaseForLocation(view.convert(view.bounds, to: self.containerView))
                 self.layoutSubviews()
@@ -611,8 +606,8 @@ import Foundation
                 self.currentTip = self.currentTip + 1
             }) { (_) -> Void in
                 if let delegate = self.delegate {
-                    if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseNext(_:))) {
-                        delegate.iShowcaseNext!(self)
+                    if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseNextCaseShown(_:))) {
+                        delegate.iShowcaseNextCaseShown!(self)
                     }
                 }
             }
