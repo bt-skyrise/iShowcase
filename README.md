@@ -1,4 +1,4 @@
-# iShowcase
+# iShowcase (with sequence mode)
 
 Highlight individual parts of your application using iShowcase
 
@@ -19,7 +19,7 @@ Highlight individual parts of your application using iShowcase
 iShowcase is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod "iShowcase", "~> 2.0"
+    pod "iShowcase", "~> 2.0", :git => 'https://github.com/bt-skyrise/iShowcase.git'
 
 or
 
@@ -48,28 +48,43 @@ showcase.delegate = self;
 #### Delegate Methods
 
 ``` objective-c
-iShowcaseShown // Called When Showcase is displayed
-iShowcaseDismissed // Called When Showcase is removed
+iShowcaseShown // Called when Showcase is displayed
+iShowcaseDismissed // Called when Showcase is removed
+iShowcaseCancelled // Called when Showcase is canceled by user
+iShowcaseNextCaseShown // Called when next case is shown
 ```
 
 #### Displaying iShowcase
 
 ``` swift
-showcase.setupShowcaseForView(view: UIView)
-showcase.titleLabel.text = "Default"
-showcase.detailsLabel.text = "This is default iShowcase!"
+showcase.setupShowcaseForView(view: UIView, title: "TITLE", subtitle: "SUBTITLE")
 showcase.show()
 
 // For custom location
 
-setupShowcaseForLocation(location: CGRect)
+setupShowcaseForLocation(location: CGRect, title: "TITLE", subtitle: "SUBTITLE")
 
 // Methods for other UI Elements
 
-setupShowcaseForTableView(tableView: UITableView)
-setupShowcaseForTableView(tableView: UITableView, withIndexPath: NSIndexPath)
-setupShowcaseForTableView(tableView: UITableView, withIndexOfItem: Int, andSectionOfItem: Int)
-setupShowcaseForBarButtonItem(barButtonItem: UIBarButtonItem)
+setupShowcaseForTableView(tableView: UITableView, title: "TITLE", subtitle: "SUBTITLE")
+setupShowcaseForTableView(tableView: UITableView, withIndexPath: NSIndexPath, title: "TITLE", subtitle: "SUBTITLE")
+setupShowcaseForTableView(tableView: UITableView, withIndexOfItem: Int, andSectionOfItem: Int, title: "TITLE", subtitle: "SUBTITLE")
+setupShowcaseForBarButtonItem(barButtonItem: UIBarButtonItem, title: "TITLE", subtitle: "SUBTITLE")
+```
+
+#### Displaying multiple iShowcase's in sequence mode
+
+``` swift
+showcase.delegate = self
+showcase.highlightColor = UIColor.red
+showcase.textBackgroundColor = UIColor.darkGrey
+            
+showcase.setupShowcaseForView(view, title: "TITLE", subtitle: "SUBTITLE")
+showcase.setupShowcaseForView(view, title: "TITLE", subtitle: "SUBTITLE")
+showcase.setupShowcaseForView(view, title: "TITLE", subtitle: "SUBTITLE")
+showcase.setupShowcaseForTableView(tableView, withIndexOfItem: 0, andSectionOfItem: 1, title: "TITLE", subtitle: "SUBTITLE")
+                    
+showcase.show()
 ```
 
 #### Customizations
@@ -88,6 +103,10 @@ highlightColor: UIColor
 type: TYPE
 radius: Float
 singleShotId: Int64
+counter: UIPageControl!
+textBackgroundColor: UIColor?
+innerShowcaseRadius: CGFloat = 1.0
+outerShowcaseRadius: CGFloat = 4.0
 ```
 
 ## Screenshots
@@ -104,6 +123,10 @@ Inspired from [ShowcaseView](https://github.com/amlcurran/Showcaseview) by [Alex
 ## Author
 
 rahuliyer95, rahuliyer573@gmail.com
+
+## Fork modified
+
+konroj, konradroj@icloud.com
 
 ## License
 
