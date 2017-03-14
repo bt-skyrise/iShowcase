@@ -20,7 +20,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     let tableData = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
     var showcase: iShowcase!
     var custom: Bool = false
-    var multiple: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,28 +39,21 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     }
 
     @IBAction func barButtonClick(_ sender: UIBarButtonItem) {
-        showcase.titleLabel.text = "Bar Button Example"
-        showcase.detailsLabel.text = "This example highlights the Bar Button Item"
-        showcase.setupShowcaseForBarButtonItem(sender)
+        showcase.setupShowcaseForBarButtonItem(sender, title: "Bar Button Example", subtitle: "This example highlights the Bar Button Item")
         showcase.show()
     }
 
     @IBAction func defaultShowcaseClick(_ sender: UIButton) {
-        showcase.titleLabel.text = "Default"
-        showcase.detailsLabel.text = "This is default iShowcase with long long long long long long long long text"
-        showcase.setupShowcaseForView(sender)
+        showcase.setupShowcaseForView(sender, title: "Default", subtitle: "This is default iShowcase with long long long long long long long long text")
         showcase.show()
     }
 
     @IBAction func multipleShowcaseClick(_ sender: UIButton) {
-        multiple = true
         defaultShowcaseClick(sender)
     }
 
     @IBAction func tableViewShowcaseClick(_ sender: UIButton) {
-        showcase.titleLabel.text = "UITableView"
-        showcase.detailsLabel.text = "This is default position example"
-        showcase.setupShowcaseForTableView(tableView)
+        showcase.setupShowcaseForTableView(tableView, title: "UITableView", subtitle: "This is default position example")
         showcase.show()
     }
 
@@ -84,9 +76,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
 
         custom = true
         showcase.type = .circle
-        showcase.titleLabel.text = "Custom"
-        showcase.detailsLabel.text = "This is custom iShowcase"
-        showcase.setupShowcaseForView(sender)
+        showcase.setupShowcaseForView(sender, title: "Custom", subtitle: "This is custom iShowcase")
 
         // Uncomment this to show the showcase only once after 1st run
         // showcase.singleShotId = 47
@@ -120,9 +110,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showcase.titleLabel.text = "UITableView"
-        showcase.detailsLabel.text = "This is custom position example"
-        showcase.setupShowcaseForTableView(tableView, withIndexPath: indexPath)
+        showcase.textBackgroundColor = UIColor.gray
+        
+        showcase.setupShowcaseForTableView(tableView, withIndexPath: indexPath, title: "UITableView", subtitle: "This is sequence example 1")
+        showcase.setupShowcaseForTableView(tableView, withIndexPath: indexPath.row > 3 ? IndexPath(row: indexPath.row - 1, section: indexPath.section) : IndexPath(row: indexPath.row + 1, section: indexPath.section), title: "UITableView", subtitle: "This is sequence example 2")
         showcase.show()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -133,14 +124,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     }
 
     func iShowcaseDismissed(_ showcase: iShowcase) {
-        if multiple {
-            showcase.titleLabel.text = "Multiple"
-            showcase.detailsLabel.text = "This is multiple iShowcase"
-            showcase.setupShowcaseForView(titleColor)
-            showcase.show()
-            multiple = false
-        }
-
         if custom {
             setupShowcase()
             custom = false

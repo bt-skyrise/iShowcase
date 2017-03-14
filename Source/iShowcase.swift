@@ -49,7 +49,7 @@ import Foundation
     open var textBackgroundView: UIView!
     /// Label to show the title of the showcase
     open var closeButton: UIButton!
-    /// Background of labels
+    /// Counter that shows current case number
     open var counter: UIPageControl!
     /// Color of the background for the showcase. Default is black
     open var coverColor: UIColor!
@@ -597,6 +597,8 @@ import Foundation
             UIView.animate(withDuration: 0.35, animations: { () -> Void in
                 self.alpha = 0
             }, completion: { (_) -> Void in
+                self.numberOfTips = 0
+                self.currentTip = 0
                 self.onAnimationComplete()
             })
         } else {

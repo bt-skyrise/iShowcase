@@ -124,7 +124,7 @@ Inspired from [ShowcaseView](https://github.com/amlcurran/Showcaseview) by [Alex
 
 rahuliyer95, rahuliyer573@gmail.com
 
-## Fork modified
+## Fork by
 
 konroj, konradroj@icloud.com
 
