@@ -35,12 +35,42 @@ import Foundation
      
      - showcase: The instance of the showcase
      */
-    @objc optional func iShowcaseNextCaseShown(_ showcase: iShowcase)
+    @objc optional func iShowcaseNextCaseShown(_ showcase: iShowcase, currentTipNumber: Int)
 }
 
 @objc open class iShowcase: UIView {
-    
     // MARK: Properties
+    
+    /// Label to show the title of the showcase
+    open var titleLabel: UILabel!
+    /// Label to show the description of the showcase
+    open var detailsLabel: UILabel!
+    /// Background of labels
+    open var textBackgroundView: UIView!
+    /// Label to show the title of the showcase
+    open var closeButton: UIButton!
+    /// Background of labels
+    open var counter: UIPageControl!
+    /// Color of the background for the showcase. Default is black
+    open var coverColor: UIColor!
+    /// Alpha of the background of the showcase. Default is 0.75
+    open var coverAlpha: CGFloat!
+    /// Color of the showcase highlight. Default is #1397C5
+    open var highlightColor: UIColor!
+    /// Color of the labels background.
+    open var textBackgroundColor: UIColor?
+    /// Inner showcase radius
+    open var innerShowcaseRadius: CGFloat = 1.0
+    /// Outer showcase radius
+    open var outerShowcaseRadius: CGFloat = 4.0
+    /// Type of the showcase to be created. Default is Rectangle
+    open var type: TYPE!
+    /// Radius of the circle with iShowcase type Circle. Default radius is 25
+    open var radius: Float!
+    /// Single Shot ID for iShowcase
+    open var singleShotId: Int64!
+    /// Delegate for handling iShowcase callbacks
+    open var delegate: iShowcaseDelegate?
     
     /**
      Type of the highlight for the showcase
@@ -86,33 +116,6 @@ import Foundation
     
     fileprivate var numberOfTips = 0
     fileprivate var currentTip = 0
-    
-    /// Label to show the title of the showcase
-    open var titleLabel: UILabel!
-    /// Label to show the description of the showcase
-    open var detailsLabel: UILabel!
-    /// Background of labels
-    open var textBackgroundView: UIView!
-    /// Label to show the title of the showcase
-    open var closeButton: UIButton!
-    /// Background of labels
-    open var counter: UIPageControl!
-    /// Color of the background for the showcase. Default is black
-    open var coverColor: UIColor!
-    /// Alpha of the background of the showcase. Default is 0.75
-    open var coverAlpha: CGFloat!
-    /// Color of the showcase highlight. Default is #1397C5
-    open var highlightColor: UIColor!
-    /// Color of the labels background.
-    open var textBackgroundColor: UIColor?
-    /// Type of the showcase to be created. Default is Rectangle
-    open var type: TYPE!
-    /// Radius of the circle with iShowcase type Circle. Default radius is 25
-    open var radius: Float!
-    /// Single Shot ID for iShowcase
-    open var singleShotId: Int64!
-    /// Delegate for handling iShowcase callbacks
-    open var delegate: iShowcaseDelegate?
     
     // MARK: Initialize
     
@@ -357,12 +360,12 @@ import Foundation
                 context?.setFillColor(coverColor.cgColor)
                 context?.setStrokeColor(highlightColor.cgColor)
                 context?.setLineWidth(3)
-                context?.addPath(UIBezierPath(roundedRect: highlightRect, cornerRadius: 4.0).cgPath)
+                context?.addPath(UIBezierPath(roundedRect: highlightRect, cornerRadius: outerShowcaseRadius).cgPath)
                 context?.drawPath(using: .fillStroke)
                 
                 // Inner highlight
                 context?.setLineWidth(3)
-                context?.addPath(UIBezierPath(roundedRect: showcaseRect, cornerRadius: 1.0).cgPath)
+                context?.addPath(UIBezierPath(roundedRect: showcaseRect, cornerRadius: innerShowcaseRadius).cgPath)
                 context?.drawPath(using: .fillStroke)
                 
                 let showcase = UIGraphicsGetImageFromCurrentImageContext()
@@ -606,8 +609,8 @@ import Foundation
                 self.currentTip = self.currentTip + 1
             }) { (_) -> Void in
                 if let delegate = self.delegate {
-                    if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseNextCaseShown(_:))) {
-                        delegate.iShowcaseNextCaseShown!(self)
+                    if delegate.responds(to: #selector(iShowcaseDelegate.iShowcaseNextCaseShown(_:currentTipNumber:))) {
+                        delegate.iShowcaseNextCaseShown!(self, currentTipNumber: self.currentTip)
                     }
                 }
             }
