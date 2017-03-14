@@ -8,7 +8,7 @@ Highlight individual parts of your application using iShowcase
 [![Platform](https://img.shields.io/cocoapods/p/iShowcase.svg?style=flat)](http://cocoadocs.org/docsets/iShowcase)
 [![Issues](https://img.shields.io/github/issues/rahuliyer95/iShowcase.svg?style=flat)](http://www.github.com/rahuliyer95/iShowcase/issues?state=open)
 
-![1](assets/1.png)
+<iframe src='https://gfycat.com/ifr/SkinnyGrimGermanpinscher' frameborder='0' scrolling='no' width='640' height='1130' allowfullscreen></iframe>
 
 ## Requirements
 * iOS 7.0 or higher
@@ -108,13 +108,6 @@ textBackgroundColor: UIColor?
 innerShowcaseRadius: CGFloat = 1.0
 outerShowcaseRadius: CGFloat = 4.0
 ```
-
-## Screenshots
-
-![2](assets/2.png)
-![3](assets/3.png)
-![4](assets/4.png)
-![5](assets/5.png)
 
 ## Credits
 
