@@ -19,7 +19,7 @@ Highlight individual parts of your application using iShowcase
 iShowcase is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod "iShowcase", "~> 2.0", :git => 'https://github.com/bt-skyrise/iShowcase.git'
+    pod "iShowcase", :git => 'https://github.com/bt-skyrise/iShowcase.git'
 
 or
 
